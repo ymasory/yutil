@@ -4,7 +4,7 @@ import os.path
 import subprocess
 import sys
     
-
+#---- external processes ----#
 def call(args):
     '''
     Blocking process call.
@@ -15,6 +15,7 @@ def call(args):
                          stdout=subprocess.PIPE, close_fds=True, shell=False)
     o, e = p.communicate()
     return o.decode('utf-8'), e.decode('utf-8'), p.returncode
+
 
 def carefulcall(args):
     '''
@@ -36,7 +37,6 @@ class ReturnCodeException(Exception):
         return repr('return code: ' + self.retcode + '\n')
 
 
-
 class MySQL:
 
     def __init__(self, domain, database, uname, passwd):
@@ -44,6 +44,7 @@ class MySQL:
         self.database = database
         self.uname = uname
         self.passwd = passwd
+
 
     def dbcall(sql):
         args = ['mysql', '-u', self.uname, '-h' + self.url,
@@ -55,6 +56,7 @@ class MySQL:
         return (rows, e)
 
 
+#---- hashing ----#
 def md5file(path):
     '''
     Return md5 sum of provided file.
@@ -70,6 +72,7 @@ def md5file(path):
         return md5.hexdigest()
 
 
+#---- file system ----#
 LF = '\n'
 CR = '\r'
 CRLF = '\r\n'
@@ -82,6 +85,7 @@ def makepath(*paths):
     '''
     return os.sep.join(paths)
 
+
 def abswalk(path):
     '''
     Generator returning the absolute path of every file (directory or other)
@@ -93,7 +97,8 @@ def abswalk(path):
             yield os.path.join(path, dirpath, dirname)
         for filename in filenames:
             yield os.path.join(path, dirpath, filename)
-    
+
+
 def unixperm(path):
     '''
     Return unix permissions as a 3-tuple of ints.
