@@ -103,11 +103,14 @@ def abswalk(path):
 
 #TODO: handle filenames with slashes in them
 #TODO: handle cases where normalized file name already exists
-def normpath(root):
+def normpath(root, dest):
     '''
-    Recursively rename all the files and directories under root to lowercase
-    alphanumeric names. Only changes path names after the root.
+    Recursively copies all the files and directories under root to a directory
+    of the same name under dest, with normalized paths of lowercase
+    alphanumeric names.
     '''
+    dest = os.path.abspath(dest)
+    assert os.path.exists(dest), dest + ' does not exist'
     paths = [f for f in abswalk(root)]
     paths.sort(key=lambda el: - len(el))
     for path in paths:
@@ -116,7 +119,7 @@ def normpath(root):
             "can't handle special file: " + path)
         assert path.startswith(root)
         rest = path[len(root):]
-        newpath = root + _normalize(rest)
+        newpath = dest + _normalize(rest)
         print(path + ' --> ' + newpath)
         dirname = os.path.dirname(newpath)
         if not os.path.exists(dirname):
@@ -125,14 +128,14 @@ def normpath(root):
                                          ' does not exist')
         if os.path.isfile(path):
             assert not os.path.exists(newpath), newpath + ' already exists'
-        shutil.move(path, newpath)
-        assert os.path.exists(newpath), newpath + ' not created'
-        if os.path.exists(path):
-            if os.path.isdir(path):
-                os.rmdir(path)
-            else:
-                os.remove(path)
-        assert not os.path.exists(path), path + ' still exists'
+        # shutil.move(path, newpath)
+        # assert os.path.exists(newpath), newpath + ' not created'
+        # if os.path.exists(path):
+        #     if os.path.isdir(path):
+        #         os.rmdir(path)
+        #     else:
+        #         os.remove(path)
+        # assert not os.path.exists(path), path + ' still exists'
 
 
 def _normalize(fname):
