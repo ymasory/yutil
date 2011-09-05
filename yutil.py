@@ -122,12 +122,12 @@ def normpath(root, dest):
         newpath = dest + _normalize(rest)
         print(path + ' --> ' + newpath)
         dirname = os.path.dirname(newpath)
-        if not os.path.exists(dirname):
-            os.makedirs(dirname)
-        assert os.path.exists(dirname), ('needed directory ' + dirname +
-                                         ' does not exist')
-        if os.path.isfile(path):
-            assert not os.path.exists(newpath), newpath + ' already exists'
+        # if not os.path.exists(dirname):
+        #     os.makedirs(dirname)
+        # assert os.path.exists(dirname), ('needed directory ' + dirname +
+        #                                  ' does not exist')
+        # if os.path.isfile(path):
+        #     assert not os.path.exists(newpath), newpath + ' already exists'
         # shutil.move(path, newpath)
         # assert os.path.exists(newpath), newpath + ' not created'
         # if os.path.exists(path):
